@@ -1,4 +1,5 @@
 using ExcelAiInsights.Api.Storage;
+using ExcelAiInsights.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,8 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton<ExcelAiInsights.Api.Services.ExcelPreviewReader>();
+builder.Services.AddSingleton<ExcelPreviewReader>();
 
 builder.Services.AddSingleton<LocalFileStore>();
 

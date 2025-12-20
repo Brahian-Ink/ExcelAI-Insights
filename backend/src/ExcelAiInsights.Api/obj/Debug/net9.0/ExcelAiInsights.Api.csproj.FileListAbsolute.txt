@@ -39,3 +39,11 @@ D:\ExcelAI\backend\src\ExcelAiInsights.Api\obj\Debug\net9.0\refint\ExcelAiInsigh
 D:\ExcelAI\backend\src\ExcelAiInsights.Api\obj\Debug\net9.0\ExcelAiInsights.Api.pdb
 D:\ExcelAI\backend\src\ExcelAiInsights.Api\obj\Debug\net9.0\ExcelAiInsights.Api.genruntimeconfig.cache
 D:\ExcelAI\backend\src\ExcelAiInsights.Api\obj\Debug\net9.0\ref\ExcelAiInsights.Api.dll
+D:\ExcelAI\backend\src\ExcelAiInsights.Api\bin\Debug\net9.0\ClosedXML.dll
+D:\ExcelAI\backend\src\ExcelAiInsights.Api\bin\Debug\net9.0\ClosedXML.Parser.dll
+D:\ExcelAI\backend\src\ExcelAiInsights.Api\bin\Debug\net9.0\DocumentFormat.OpenXml.dll
+D:\ExcelAI\backend\src\ExcelAiInsights.Api\bin\Debug\net9.0\DocumentFormat.OpenXml.Framework.dll
+D:\ExcelAI\backend\src\ExcelAiInsights.Api\bin\Debug\net9.0\ExcelNumberFormat.dll
+D:\ExcelAI\backend\src\ExcelAiInsights.Api\bin\Debug\net9.0\RBush.dll
+D:\ExcelAI\backend\src\ExcelAiInsights.Api\bin\Debug\net9.0\SixLabors.Fonts.dll
+D:\ExcelAI\backend\src\ExcelAiInsights.Api\bin\Debug\net9.0\System.IO.Packaging.dll

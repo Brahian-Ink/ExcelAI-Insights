@@ -1,6 +1,7 @@
 using ExcelAiInsights.Api.Contracts;
 using ExcelAiInsights.Api.Storage;
 using Microsoft.AspNetCore.Mvc;
+using ExcelAiInsights.Api.Services;
 
 namespace ExcelAiInsights.Api.Controllers;
 
@@ -40,6 +41,22 @@ public async Task<ActionResult<FileUploadResponse>> Upload([FromForm] FileUpload
         OriginalName: file.FileName,
         SizeBytes: file.Length
     ));
+}
+[HttpGet("{fileId}/preview")]
+public ActionResult<FilePreviewResponse> Preview(string fileId, ExcelPreviewReader reader)
+
+{
+    var path = _store.GetPath(fileId);
+    if (path is null)
+        return NotFound("File not found.");
+
+    var result = reader.ReadPreview(path);
+
+    return Ok(new FilePreviewResponse
+    {
+        Columns = result.Columns,
+        Rows = result.Rows
+    });
 }
 
 }

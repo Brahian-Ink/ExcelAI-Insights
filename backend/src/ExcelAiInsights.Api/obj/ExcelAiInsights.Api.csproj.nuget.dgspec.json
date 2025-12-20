@@ -57,6 +57,10 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "ClosedXML": {
+              "target": "Package",
+              "version": "[0.105.0, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[10.1.0, )"
