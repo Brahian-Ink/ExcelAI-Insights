@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "ExcelAiInsights.Infrastructure/1.0.0": {
+        "dependencies": {
+          "ExcelAiInsights.Domain": "1.0.0"
+        },
+        "runtime": {
+          "ExcelAiInsights.Infrastructure.dll": {}
+        }
+      },
+      "ExcelAiInsights.Domain/1.0.0": {
+        "runtime": {
+          "ExcelAiInsights.Domain.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ExcelAiInsights.Infrastructure/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ExcelAiInsights.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

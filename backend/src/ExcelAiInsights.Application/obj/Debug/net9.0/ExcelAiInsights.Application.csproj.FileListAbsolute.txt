@@ -1,0 +1,16 @@
+D:\ExcelAI\backend\src\ExcelAiInsights.Application\bin\Debug\net9.0\ExcelAiInsights.Application.deps.json
+D:\ExcelAI\backend\src\ExcelAiInsights.Application\bin\Debug\net9.0\ExcelAiInsights.Application.dll
+D:\ExcelAI\backend\src\ExcelAiInsights.Application\bin\Debug\net9.0\ExcelAiInsights.Application.pdb
+D:\ExcelAI\backend\src\ExcelAiInsights.Application\bin\Debug\net9.0\ExcelAiInsights.Domain.dll
+D:\ExcelAI\backend\src\ExcelAiInsights.Application\bin\Debug\net9.0\ExcelAiInsights.Domain.pdb
+D:\ExcelAI\backend\src\ExcelAiInsights.Application\obj\Debug\net9.0\ExcelAiInsights.Application.csproj.AssemblyReference.cache
+D:\ExcelAI\backend\src\ExcelAiInsights.Application\obj\Debug\net9.0\ExcelAiInsights.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\ExcelAI\backend\src\ExcelAiInsights.Application\obj\Debug\net9.0\ExcelAiInsights.Application.AssemblyInfoInputs.cache
+D:\ExcelAI\backend\src\ExcelAiInsights.Application\obj\Debug\net9.0\ExcelAiInsights.Application.AssemblyInfo.cs
+D:\ExcelAI\backend\src\ExcelAiInsights.Application\obj\Debug\net9.0\ExcelAiInsights.Application.csproj.CoreCompileInputs.cache
+D:\ExcelAI\backend\src\ExcelAiInsights.Application\obj\Debug\net9.0\ExcelAiInsights.Application.sourcelink.json
+D:\ExcelAI\backend\src\ExcelAiInsights.Application\obj\Debug\net9.0\ExcelAiI.E2BA8A74.Up2Date
+D:\ExcelAI\backend\src\ExcelAiInsights.Application\obj\Debug\net9.0\ExcelAiInsights.Application.dll
+D:\ExcelAI\backend\src\ExcelAiInsights.Application\obj\Debug\net9.0\refint\ExcelAiInsights.Application.dll
+D:\ExcelAI\backend\src\ExcelAiInsights.Application\obj\Debug\net9.0\ExcelAiInsights.Application.pdb
+D:\ExcelAI\backend\src\ExcelAiInsights.Application\obj\Debug\net9.0\ref\ExcelAiInsights.Application.dll
