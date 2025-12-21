@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ExcelAiInsights.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4845fb87ae3e419f9ddd89924497891d4b3f0954")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+11e6acfab59172dea14bf0f0764da13f4cdcda17")]
 [assembly: System.Reflection.AssemblyProductAttribute("ExcelAiInsights.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ExcelAiInsights.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

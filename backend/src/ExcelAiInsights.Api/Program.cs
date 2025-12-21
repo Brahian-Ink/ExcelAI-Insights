@@ -34,6 +34,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<ExcelAiInsights.Api.Services.ExcelPreviewReader>();
 builder.Services.AddSingleton<ExcelPreviewReader>();
 builder.Services.AddSingleton<ExcelAiInsights.Api.Services.ExcelProfiler>();
+builder.Services.AddSingleton<ExcelAggregator>();
 
 builder.Services.AddSingleton<LocalFileStore>();
 

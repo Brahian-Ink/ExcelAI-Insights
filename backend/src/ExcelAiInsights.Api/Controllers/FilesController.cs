@@ -18,7 +18,8 @@ public sealed class FilesController : ControllerBase
     {
         _store = store;
     }
-
+    private static string Clip(string s)
+        => s.Length > 200 ? s[..200] + "..." : s;
     [HttpPost("upload")]
     [Consumes("multipart/form-data")]
     [RequestSizeLimit(MaxFileSizeBytes)]
@@ -106,27 +107,43 @@ public sealed class FilesController : ControllerBase
             {
                 columns = pv.Columns,
                 rows = pv.Rows
+        .Select(r => r.Select(Clip).ToList())
+        .ToList()
             }
+
         };
 
         var payloadJson = JsonSerializer.Serialize(payload);
 
         var system = """
 You are a data analyst. You receive a dataset profile + a small preview.
-Return ONLY valid JSON (json object) that matches this schema:
+Return ONLY valid JSON (json object). No markdown.
 
+Schema:
 {
   "summary": "string",
   "keyFindings": ["string"],
   "dataQualityWarnings": ["string"],
-  "suggestedCharts": ["string"]
+  "suggestedCharts": [
+    {
+      "title": "string",
+      "type": "bar|pie|line|scatter",
+      "groupBy": "string",
+      "value": "string",
+      "agg": "sum|avg|count|min|max",
+      "top": 10
+    }
+  ]
 }
 
 Rules:
-- Be concrete (mention column names).
-- Focus on business-relevant insights + data issues.
-- If decimals use comma vs dot, mention it.
+- Use EXACT column names from the payload (case-sensitive).
+- suggestedCharts must contain 2 to 4 items.
+- For bar/pie ALWAYS set: groupBy + value + agg + top.
+- For line/scatter you may set type, but still include groupBy/value empty if not applicable.
 """;
+
+
 
         var user = $"Return JSON only.\nDataset payload:\n{payloadJson}";
 
@@ -169,4 +186,50 @@ Rules:
             });
         }
     }
+    [HttpGet("{fileId}/aggregate")]
+    public ActionResult<AggregateResponse> Aggregate(
+    string fileId,
+    [FromQuery] string groupBy,
+    [FromQuery] string value,
+    ExcelAggregator aggregator,
+    [FromQuery] string agg = "sum",
+    [FromQuery] int? top = 20,
+    [FromQuery] string? sheet = null)
+    {
+        var path = _store.GetPath(fileId);
+        if (path is null)
+            return NotFound("File not found.");
+
+        try
+        {
+            var result = aggregator.Aggregate(
+                filePath: path,
+                groupByColumn: groupBy,
+                valueColumn: value,
+                agg: agg,
+                sheetName: sheet
+            );
+
+            var data = result.Data;
+
+            if (top is > 0)
+                data = data.Take(top.Value).ToList();
+
+            return Ok(new AggregateResponse
+            {
+                FileId = fileId,
+                Sheet = result.SheetName,
+                GroupBy = groupBy,
+                Value = value,
+                Agg = agg,
+                Data = data.Select(x => new AggregatePoint { Key = x.Key, Value = x.Value }).ToList()
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+
 }
