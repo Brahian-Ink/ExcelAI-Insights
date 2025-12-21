@@ -1,6 +1,6 @@
 using ExcelAiInsights.Api.Storage;
 using ExcelAiInsights.Api.Services;
-
+using OpenAI;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -14,11 +14,26 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod();
     });
 });
+builder.Services.AddHttpClient("OpenAI", client =>
+{
+    client.BaseAddress = new Uri("https://api.openai.com/v1/");
+    client.DefaultRequestHeaders.Add("Authorization",
+        $"Bearer {Environment.GetEnvironmentVariable("OPENAI_API_KEY")}");
+});
 
+builder.Services.AddSingleton(_ =>
+{
+    var key = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
+    if (string.IsNullOrWhiteSpace(key))
+        throw new InvalidOperationException("Missing OPENAI_API_KEY environment variable.");
+
+    return new OpenAIClient(key);
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<ExcelAiInsights.Api.Services.ExcelPreviewReader>();
 builder.Services.AddSingleton<ExcelPreviewReader>();
+builder.Services.AddSingleton<ExcelAiInsights.Api.Services.ExcelProfiler>();
 
 builder.Services.AddSingleton<LocalFileStore>();
 

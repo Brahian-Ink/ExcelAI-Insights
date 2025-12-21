@@ -47,3 +47,7 @@ D:\ExcelAI\backend\src\ExcelAiInsights.Api\bin\Debug\net9.0\ExcelNumberFormat.dl
 D:\ExcelAI\backend\src\ExcelAiInsights.Api\bin\Debug\net9.0\RBush.dll
 D:\ExcelAI\backend\src\ExcelAiInsights.Api\bin\Debug\net9.0\SixLabors.Fonts.dll
 D:\ExcelAI\backend\src\ExcelAiInsights.Api\bin\Debug\net9.0\System.IO.Packaging.dll
+D:\ExcelAI\backend\src\ExcelAiInsights.Api\bin\Debug\net9.0\OpenAI.dll
+D:\ExcelAI\backend\src\ExcelAiInsights.Api\bin\Debug\net9.0\System.ClientModel.dll
+D:\ExcelAI\backend\src\ExcelAiInsights.Api\bin\Debug\net9.0\System.Memory.Data.dll
+D:\ExcelAI\backend\src\ExcelAiInsights.Api\bin\Debug\net9.0\System.Net.ServerSentEvents.dll
