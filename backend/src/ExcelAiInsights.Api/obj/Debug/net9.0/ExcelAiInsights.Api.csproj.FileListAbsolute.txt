@@ -51,3 +51,5 @@ D:\ExcelAI\backend\src\ExcelAiInsights.Api\bin\Debug\net9.0\OpenAI.dll
 D:\ExcelAI\backend\src\ExcelAiInsights.Api\bin\Debug\net9.0\System.ClientModel.dll
 D:\ExcelAI\backend\src\ExcelAiInsights.Api\bin\Debug\net9.0\System.Memory.Data.dll
 D:\ExcelAI\backend\src\ExcelAiInsights.Api\bin\Debug\net9.0\System.Net.ServerSentEvents.dll
+D:\ExcelAI\backend\src\ExcelAiInsights.Api\bin\Debug\net9.0\package-lock.json
+D:\ExcelAI\backend\src\ExcelAiInsights.Api\bin\Debug\net9.0\package.json

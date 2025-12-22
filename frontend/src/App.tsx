@@ -1,5 +1,5 @@
 import "./index.css";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import {
   uploadExcel,
   getPreview,
@@ -86,6 +86,16 @@ export default function App() {
 
   const sheetRef = useRef<HTMLDivElement | null>(null);
 
+  const columnsMap = useMemo(() => {
+  const map: Record<string, string> = {};
+  for (const c of profile?.columns ?? []) {
+    map[c.normalizedName] = c.originalName; // normalized -> original
+  }
+  return map;
+}, [profile]);
+
+
+
   async function handleUploadAndPreview() {
     if (!file) return;
 
@@ -160,13 +170,14 @@ export default function App() {
       setError("");
       setChartLoading(true);
 
-      const data = await getAggregate({
-        fileId: upload.fileId,
-        groupBy: spec.groupBy,
-        value: spec.value,
-        agg: spec.agg ?? "sum",
-        top: spec.top ?? 10,
-      });
+       const data = await getAggregate({
+      fileId: upload.fileId,
+      groupBy: spec.groupBy,
+      value: spec.value,
+      agg: spec.agg ?? "sum",
+      top: spec.top ?? 10,
+      columnsMap, 
+    });
 
       setAggData(data);
     } catch (e) {
@@ -666,243 +677,284 @@ export default function App() {
           </div>
         )}
 
-        {aggData && (
-          <div className="app-section mx-auto max-w-[1400px] w-full chart-panel overflow-hidden">
-            {/* Header (centrado) */}
-            <div className="chart-header px-6 py-5">
-              <div className="chart-header-center">
-                <h2 className="chart-title">{activeSpec?.title ?? "Chart"}</h2>
+       {aggData && (() => {
+  // 🔒 Sanitiza data para que Recharts nunca reciba NaN/undefined
+  const safeChartData = (chartData ?? [])
+    .map((d: any) => {
+      const rawName = d?.name ?? d?.key ?? "-";
+      const rawValue = d?.value;
 
-                <p className="chart-sub">
-                  {aggData.agg.toUpperCase()}({aggData.value}) by {aggData.groupBy}
-                  <span className="mx-2 text-white/30">•</span>
-                  <span className="uppercase tracking-widest text-white/55">{activeSpec?.type}</span>
-                </p>
+      const num =
+        typeof rawValue === "string"
+          ? Number(rawValue.replace(/\./g, "").replace(",", ".")) // "1.234,56" -> 1234.56
+          : Number(rawValue);
 
-                <div className="mt-3 chart-meta">
-                  {chartLoading ? (
-                    <span className="chart-meta-pill">
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      Loading chart…
-                    </span>
-                  ) : (
-                    <span className="chart-meta-pill">
-                      Items: <b className="text-white/90">{chartData.length}</b>
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
+      return {
+        name: String(rawName),
+        value: Number.isFinite(num) ? num : NaN,
+      };
+    })
+    .filter((d) => d.name && Number.isFinite(d.value));
 
-            {/* Body */}
-            <div className="chart-body px-6 pb-6 pt-5">
-              {/* KPI Row */}
-              {(() => {
-                const values = chartData.map((d) => Number(d.value) || 0);
-                const count = values.length;
-                const total = values.reduce((a, b) => a + b, 0);
-                const avg = count ? total / count : 0;
-                const min = count ? Math.min(...values) : 0;
-                const max = count ? Math.max(...values) : 0;
+  // KPIs
+  const values = safeChartData.map((d) => d.value);
+  const count = values.length;
+  const total = values.reduce((a, b) => a + b, 0);
+  const avg = count ? total / count : 0;
+  const min = count ? Math.min(...values) : 0;
+  const max = count ? Math.max(...values) : 0;
 
-                const maxItem = chartData.reduce(
-                  (best, cur) => (Number(cur.value) > Number(best.value) ? cur : best),
-                  chartData[0] ?? { name: "-", value: 0 }
-                );
+  const maxItem =
+    safeChartData.reduce(
+      (best, cur) => (cur.value > best.value ? cur : best),
+      safeChartData[0] ?? { name: "-", value: 0 }
+    ) ?? { name: "-", value: 0 };
 
-                const fmt = (n: number) =>
-                  Number.isFinite(n)
-                    ? n.toLocaleString(undefined, { maximumFractionDigits: 2 })
-                    : "-";
+  const fmt = (n: number) =>
+    Number.isFinite(n)
+      ? n.toLocaleString(undefined, { maximumFractionDigits: 2 })
+      : "-";
 
-                return (
-                  <div className="chart-kpis mb-5">
-                    <div className="chart-kpi">
-                      <div className="chart-kpi-label">TOTAL</div>
-                      <div className="chart-kpi-value">{fmt(total)}</div>
-                    </div>
+  // Pie totals
+  const pieTotal = safeChartData.reduce((a, b) => a + b.value, 0);
+  const MIN_PCT_TO_LABEL = 0.03;
+  const formatPct = (pct: number) => `${Math.round(pct * 100)}%`;
 
-                    <div className="chart-kpi">
-                      <div className="chart-kpi-label">AVERAGE</div>
-                      <div className="chart-kpi-value">{fmt(avg)}</div>
-                    </div>
+  const chartKey = `${activeSpec?.type}-${aggData.fileId}-${aggData.groupBy}-${aggData.value}-${aggData.agg}-${aggData.sheet}`;
 
-                    <div className="chart-kpi">
-                      <div className="chart-kpi-label">MAX</div>
-                      <div className="chart-kpi-value">{fmt(max)}</div>
-                      <div className="chart-kpi-sub truncate" title={String(maxItem?.name ?? "-")}>
-                        {String(maxItem?.name ?? "-")}
-                      </div>
-                    </div>
+  return (
+    <div className="app-section mx-auto max-w-[1400px] w-full chart-panel overflow-hidden">
+      {/* Header */}
+      <div className="chart-header px-6 py-5">
+        <div className="chart-header-center">
+          <h2 className="chart-title">{activeSpec?.title ?? "Chart"}</h2>
 
-                    <div className="chart-kpi">
-                      <div className="chart-kpi-label">MIN</div>
-                      <div className="chart-kpi-value">{fmt(min)}</div>
-                    </div>
+          <p className="chart-sub">
+            {aggData.agg.toUpperCase()}({aggData.value}) by {aggData.groupBy}
+            <span className="mx-2 text-white/30">•</span>
+            <span className="uppercase tracking-widest text-white/55">
+              {activeSpec?.type}
+            </span>
+          </p>
 
-                    <div className="chart-kpi">
-                      <div className="chart-kpi-label">ITEMS</div>
-                      <div className="chart-kpi-value">{fmt(count)}</div>
-                    </div>
-                  </div>
-                );
-              })()}
+          <div className="mt-3 chart-meta">
+            {chartLoading ? (
+              <span className="chart-meta-pill">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Loading chart…
+              </span>
+            ) : (
+              <span className="chart-meta-pill">
+                Items: <b className="text-white/90">{safeChartData.length}</b>
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
 
-              {/* Chart box */}
-              <div className="chart-box">
-                <div className="chart-box-inner">
-                  <ResponsiveContainer width="100%" height="100%">
-                    {activeSpec?.type === "line" ? (
-                      <LineChart data={chartData} margin={{ top: 14, right: 20, left: 8, bottom: 14 }}>
-                        <XAxis
-                          dataKey="name"
-                          tick={{ fill: "rgba(255,255,255,0.80)", fontSize: 11 }}
-                          axisLine={{ stroke: "rgba(255,255,255,0.18)" }}
-                          tickLine={{ stroke: "rgba(255,255,255,0.18)" }}
-                        />
-                        <YAxis
-                          tick={{ fill: "rgba(255,255,255,0.80)", fontSize: 11 }}
-                          axisLine={{ stroke: "rgba(255,255,255,0.18)" }}
-                          tickLine={{ stroke: "rgba(255,255,255,0.18)" }}
-                        />
-                        <Tooltip
-                          contentStyle={{
-                            background: "rgba(10, 12, 16, 0.92)",
-                            border: "1px solid rgba(255,255,255,0.10)",
-                            color: "white",
-                            borderRadius: 14,
-                            padding: "10px 12px",
-                          }}
-                          labelStyle={{ color: "rgba(255,255,255,0.85)" }}
-                          itemStyle={{ color: "rgba(255,255,255,0.92)" }}
-                        />
-                        <Line dataKey="value" stroke="rgba(33,163,102,0.95)" strokeWidth={2.25} dot={false} activeDot={{ r: 5 }} />
-                      </LineChart>
-                    ) : activeSpec?.type === "pie" ? (
-                      (() => {
-                        const total = chartData.reduce((a, b) => a + (Number(b.value) || 0), 0);
-                        const MIN_PCT_TO_LABEL = 0.03;
-                        const formatPct = (pct: number) => `${Math.round(pct * 100)}%`;
+      {/* Body */}
+      <div className="chart-body px-6 pb-6 pt-5">
+        {/* KPI Row */}
+        <div className="chart-kpis mb-5">
+          <div className="chart-kpi">
+            <div className="chart-kpi-label">TOTAL</div>
+            <div className="chart-kpi-value">{fmt(total)}</div>
+          </div>
 
-                        return (
-                          <PieChart>
-                            <Tooltip
-                              contentStyle={{
-                                background: "rgba(10, 12, 16, 0.92)",
-                                border: "1px solid rgba(255,255,255,0.10)",
-                                color: "white",
-                                borderRadius: 14,
-                                padding: "10px 12px",
-                              }}
-                              labelStyle={{ color: "rgba(255,255,255,0.85)" }}
-                              itemStyle={{ color: "rgba(255,255,255,0.92)" }}
-                              formatter={(v: any) => {
-                                const n = Number(v) || 0;
-                                const pct = total ? n / total : 0;
-                                return [`${n.toLocaleString()} (${formatPct(pct)})`, "Value"];
-                              }}
-                            />
+          <div className="chart-kpi">
+            <div className="chart-kpi-label">AVERAGE</div>
+            <div className="chart-kpi-value">{fmt(avg)}</div>
+          </div>
 
-                            <Legend
-                              verticalAlign="bottom"
-                              align="center"
-                              wrapperStyle={{
-                                color: "rgba(255,255,255,0.80)",
-                                fontSize: 11,
-                                paddingTop: 8,
-                              }}
-                            />
-
-                            <Pie
-                              data={chartData}
-                              dataKey="value"
-                              nameKey="name"
-                              stroke="#1e8614ff"
-                              outerRadius="88%"
-                              paddingAngle={0}
-                              labelLine={true}
-                              label={(props: any) => {
-                                const { name, value } = props;
-                                const n = Number(value) || 0;
-                                const pct = total ? n / total : 0;
-                                if (pct < MIN_PCT_TO_LABEL) return "";
-                                return `${name} ${formatPct(pct)}`;
-                              }}
-                            >
-                              {chartData.map((_, idx) => (
-                                <Cell
-                                  key={idx}
-                                  fill={
-                                    [
-                                      "rgba(33,163,102,0.95)",
-                                      "rgba(88,190,73,0.92)",
-                                      "rgba(37,165,90,0.92)",
-                                      "rgba(51,192,74,0.92)",
-                                      "rgba(185,209,92,0.90)",
-                                      "rgba(14,109,59,0.92)",
-                                      "rgba(26,144,86,0.92)",
-                                      "rgba(73,214,122,0.92)",
-                                    ][idx % 8]
-                                  }
-                                />
-                              ))}
-                            </Pie>
-                          </PieChart>
-                        );
-                      })()
-                    ) : (
-                      <BarChart data={chartData} margin={{ top: 14, right: 20, left: 8, bottom: 14 }}>
-                        <XAxis
-                          dataKey="name"
-                          tick={{ fill: "rgba(255,255,255,0.80)", fontSize: 11 }}
-                          axisLine={{ stroke: "rgba(255,255,255,0.18)" }}
-                          tickLine={{ stroke: "rgba(255,255,255,0.18)" }}
-                        />
-                        <YAxis
-                          tick={{ fill: "rgba(255,255,255,0.80)", fontSize: 11 }}
-                          axisLine={{ stroke: "rgba(255,255,255,0.18)" }}
-                          tickLine={{ stroke: "rgba(255,255,255,0.18)" }}
-                        />
-                        <Tooltip
-                          cursor={{ fill: "rgba(33,163,102,0.08)" }}
-                          contentStyle={{
-                            background: "rgba(10, 12, 16, 0.92)",
-                            border: "1px solid rgba(255,255,255,0.10)",
-                            color: "white",
-                            borderRadius: 14,
-                            padding: "10px 12px",
-                          }}
-                          labelStyle={{ color: "rgba(255,255,255,0.85)" }}
-                          itemStyle={{ color: "rgba(255,255,255,0.92)" }}
-                        />
-
-                        <Bar dataKey="value" radius={[12, 12, 6, 6]} maxBarSize={54}>
-                          {chartData.map((_, idx) => (
-                            <Cell
-                              key={idx}
-                              fill={
-                                [
-                                  "rgba(33,163,102,0.95)",
-                                  "rgba(88,190,73,0.94)",
-                                  "rgba(37,165,90,0.94)",
-                                  "rgba(51,192,74,0.94)",
-                                  "rgba(185,209,92,0.90)",
-                                  "rgba(14,109,59,0.94)",
-                                  "rgba(26,144,86,0.94)",
-                                  "rgba(73,214,122,0.92)",
-                                ][idx % 8]
-                              }
-                            />
-                          ))}
-                        </Bar>
-                      </BarChart>
-                    )}
-                  </ResponsiveContainer>
-                </div>
-              </div>
+          <div className="chart-kpi">
+            <div className="chart-kpi-label">MAX</div>
+            <div className="chart-kpi-value">{fmt(max)}</div>
+            <div
+              className="chart-kpi-sub truncate"
+              title={String(maxItem?.name ?? "-")}
+            >
+              {String(maxItem?.name ?? "-")}
             </div>
           </div>
-        )}
+
+          <div className="chart-kpi">
+            <div className="chart-kpi-label">MIN</div>
+            <div className="chart-kpi-value">{fmt(min)}</div>
+          </div>
+
+          <div className="chart-kpi">
+            <div className="chart-kpi-label">ITEMS</div>
+            <div className="chart-kpi-value">{fmt(count)}</div>
+          </div>
+        </div>
+
+        {/* Chart box */}
+        <div className="chart-box">
+          <div className="chart-box-inner">
+            {safeChartData.length === 0 ? (
+              <div className="p-6 text-sm text-white/60">
+                No chartable numeric data. (Values are empty/invalid or not numeric.)
+              </div>
+            ) : (
+              <ResponsiveContainer key={chartKey} width="100%" height="100%">
+                {activeSpec?.type === "line" ? (
+                  <LineChart
+                    data={safeChartData}
+                    margin={{ top: 14, right: 20, left: 8, bottom: 14 }}
+                  >
+                    <XAxis
+                      dataKey="name"
+                      tick={{ fill: "rgba(255,255,255,0.80)", fontSize: 11 }}
+                      axisLine={{ stroke: "rgba(255,255,255,0.18)" }}
+                      tickLine={{ stroke: "rgba(255,255,255,0.18)" }}
+                    />
+                    <YAxis
+                      tick={{ fill: "rgba(255,255,255,0.80)", fontSize: 11 }}
+                      axisLine={{ stroke: "rgba(255,255,255,0.18)" }}
+                      tickLine={{ stroke: "rgba(255,255,255,0.18)" }}
+                    />
+                    <Tooltip
+                      contentStyle={{
+                        background: "rgba(10, 12, 16, 0.92)",
+                        border: "1px solid rgba(255,255,255,0.10)",
+                        borderRadius: 14,
+                        padding: "10px 12px",
+                      }}
+                      labelStyle={{ color: "rgba(255,255,255,0.85)" }}
+                      itemStyle={{ color: "rgba(255,255,255,0.92)" }}
+                    />
+                    <Line
+                      dataKey="value"
+                      stroke="rgba(33,163,102,0.95)"
+                      strokeWidth={2.25}
+                      dot={false}
+                      activeDot={{ r: 5 }}
+                      isAnimationActive={false}
+                    />
+                  </LineChart>
+                ) : activeSpec?.type === "pie" ? (
+                  <PieChart>
+                    <Tooltip
+                      contentStyle={{
+                        background: "rgba(10, 12, 16, 0.92)",
+                        border: "1px solid rgba(255,255,255,0.10)",
+                        borderRadius: 14,
+                        padding: "10px 12px",
+                      }}
+                      labelStyle={{ color: "rgba(255,255,255,0.85)" }}
+                      itemStyle={{ color: "rgba(255,255,255,0.92)" }}
+                      formatter={(v: any) => {
+                        const n = Number(v) || 0;
+                        const pct = pieTotal ? n / pieTotal : 0;
+                        return [`${n.toLocaleString()} (${formatPct(pct)})`, "Value"];
+                      }}
+                    />
+
+                    <Legend
+                      verticalAlign="bottom"
+                      align="center"
+                      wrapperStyle={{
+                        color: "rgba(255,255,255,0.80)",
+                        fontSize: 11,
+                        paddingTop: 8,
+                      }}
+                    />
+
+                    <Pie
+                      data={safeChartData}
+                      dataKey="value"
+                      nameKey="name"
+                      outerRadius="88%"
+                      innerRadius="58%"     // ✅ dona
+                      paddingAngle={0}
+                      labelLine={true}
+                      isAnimationActive={false}
+                      label={(props: any) => {
+                        const { name, value } = props;
+                        const n = Number(value) || 0;
+                        const pct = pieTotal ? n / pieTotal : 0;
+                        if (pct < MIN_PCT_TO_LABEL) return "";
+                        return `${name} ${formatPct(pct)}`;
+                      }}
+                    >
+                      {safeChartData.map((d, idx) => (
+                        <Cell
+                          key={d.name}
+                          fill={[
+                            "rgba(33,163,102,0.95)",
+                            "rgba(88,190,73,0.92)",
+                            "rgba(37,165,90,0.92)",
+                            "rgba(51,192,74,0.92)",
+                            "rgba(185,209,92,0.90)",
+                            "rgba(14,109,59,0.92)",
+                            "rgba(26,144,86,0.92)",
+                            "rgba(73,214,122,0.92)",
+                          ][idx % 8]}
+                        />
+                      ))}
+                    </Pie>
+                  </PieChart>
+                ) : (
+                  <BarChart
+                    data={safeChartData}
+                    margin={{ top: 14, right: 20, left: 8, bottom: 14 }}
+                  >
+                    <XAxis
+                      dataKey="name"
+                      tick={{ fill: "rgba(255,255,255,0.80)", fontSize: 11 }}
+                      axisLine={{ stroke: "rgba(255,255,255,0.18)" }}
+                      tickLine={{ stroke: "rgba(255,255,255,0.18)" }}
+                    />
+                    <YAxis
+                      tick={{ fill: "rgba(255,255,255,0.80)", fontSize: 11 }}
+                      axisLine={{ stroke: "rgba(255,255,255,0.18)" }}
+                      tickLine={{ stroke: "rgba(255,255,255,0.18)" }}
+                    />
+                    <Tooltip
+                      cursor={{ fill: "rgba(33,163,102,0.08)" }}
+                      contentStyle={{
+                        background: "rgba(10, 12, 16, 0.92)",
+                        border: "1px solid rgba(255,255,255,0.10)",
+                        borderRadius: 14,
+                        padding: "10px 12px",
+                      }}
+                      labelStyle={{ color: "rgba(255,255,255,0.85)" }}
+                      itemStyle={{ color: "rgba(255,255,255,0.92)" }}
+                    />
+
+                    <Bar
+                      dataKey="value"
+                      radius={[12, 12, 6, 6]}
+                      maxBarSize={54}
+                      isAnimationActive={false}
+                    >
+                      {safeChartData.map((d, idx) => (
+                        <Cell
+                          key={d.name}
+                          fill={[
+                            "rgba(33,163,102,0.95)",
+                            "rgba(88,190,73,0.94)",
+                            "rgba(37,165,90,0.94)",
+                            "rgba(51,192,74,0.94)",
+                            "rgba(185,209,92,0.90)",
+                            "rgba(14,109,59,0.94)",
+                            "rgba(26,144,86,0.94)",
+                            "rgba(73,214,122,0.92)",
+                          ][idx % 8]}
+                        />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                )}
+              </ResponsiveContainer>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+})()}
+
 
         {/* Preview + Profile */}
         {preview && (
