@@ -26,22 +26,28 @@ export async function getAggregate(params: {
   agg?: string;
   top?: number;
   sheet?: string;
+  columnsMap?: Record<string, string>; // normalized -> original
 }) {
-  const { fileId, groupBy, value, agg = "sum", top = 10, sheet } = params;
+  const { fileId, groupBy, value, agg = "sum", top = 10, sheet, columnsMap } = params;
 
-  const qs = new URLSearchParams({
-    groupBy,
-    value,
-    agg,
-    top: String(top),
-  });
+  const groupByNorm = normalizeHeader(groupBy);
+  const valueNorm = normalizeHeader(value);
 
+  const groupByResolved = columnsMap?.[groupByNorm] ?? groupBy;
+  const valueResolved = columnsMap?.[valueNorm] ?? value;
+
+  const qs = new URLSearchParams();
+  qs.set("groupBy", groupByResolved);
+  qs.set("value", valueResolved);
+  qs.set("agg", agg);
+  qs.set("top", String(top));
   if (sheet) qs.set("sheet", sheet);
 
   const res = await fetch(`${API_BASE}/api/files/${fileId}/aggregate?${qs.toString()}`);
   if (!res.ok) throw new Error(await res.text());
-  return (await res.json()) as AggregateResponse;
+  return res.json();
 }
+
 
 
 export type UploadResponse = {
@@ -94,6 +100,16 @@ export async function getProfile(fileId: string): Promise<ProfileResponse> {
 }
 
 const API_BASE = "http://localhost:5125";
+
+function normalizeHeader(s: string) {
+  return s
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+}
 
 export async function uploadExcel(file: File): Promise<UploadResponse> {
   const form = new FormData();
