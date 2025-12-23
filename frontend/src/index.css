@@ -2,4 +2,1437 @@
 @tailwind components;
 @tailwind utilities;
 
+:root{
+  --text:#ffffff;
 
+  --excel:#25a55a;
+  --excel2:#58be49;
+
+  --ai1:#31b1d6;
+  --ai2:#5962d3;
+  --ai3:#ef787a;
+  --ai4:#b9d15c;
+}
+
+body{
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  background:linear-gradient(180deg, #0e0e0e, #000000);
+  color: var(--text);
+}
+
+/* ============================
+   GAP ENTRE SECCIONES
+   ============================ */
+.app-section{
+  margin-top: 46px;
+  margin-bottom: 46px;
+}
+@media (max-width: 768px){
+  .app-section{
+    margin-top: 46px;
+    margin-bottom: 46px;
+  }
+}
+
+/* ============================
+   EXCEL REAL (Preview)
+   ============================ */
+
+.excel-sheet-real{
+  border-radius: 14px;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.18);
+}
+
+.excel-edit-input{
+  width: 100%;
+  font: inherit;
+  color: #111827;
+  background: #ffffff;
+  border: 1px solid #21a366;
+  border-radius: 6px;
+  padding: 6px 8px;
+  outline: none;
+}
+
+.excel-sheet-real-header{
+  background: #f3f4f6;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.excel-sheet-real-scroll{
+  max-height: 520px;
+  overflow: auto;
+}
+
+/* Tabla */
+.excel-real-table{
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+  font-family: Calibri, "Segoe UI", Arial, sans-serif;
+  font-size: 13px;
+  color: #111827;
+}
+
+/* Corner */
+.excel-real-corner{
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 30;
+
+  width: 48px;
+  min-width: 48px;
+  background: #e5e7eb;
+  border-right: 1px solid #d1d5db;
+  border-bottom: 1px solid #d1d5db;
+}
+
+/* Column letters row */
+.excel-real-colletter{
+  position: sticky;
+  top: 0;
+  z-index: 20;
+
+  background: #e5e7eb;
+  color: #111827;
+  font-weight: 700;
+  text-align: center;
+  padding: 8px 10px;
+
+  border-right: 1px solid #d1d5db;
+  border-bottom: 1px solid #d1d5db;
+}
+
+/* Row head blank */
+.excel-real-rowhead{
+  position: sticky;
+  top: 32px;
+  left: 0;
+  z-index: 25;
+
+  width: 48px;
+  min-width: 48px;
+  background: #f3f4f6;
+  border-right: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Column names header row */
+.excel-real-th{
+  position: sticky;
+  top: 32px;
+  z-index: 15;
+
+  background: #f9fafb;
+  color: #111827;
+  font-weight: 700;
+  text-align: left;
+
+  padding: 10px 12px;
+  border-right: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+
+  white-space: nowrap;
+}
+
+/* Row numbers */
+.excel-real-rownum{
+  position: sticky;
+  left: 0;
+  z-index: 10;
+
+  width: 48px;
+  min-width: 48px;
+
+  background: #f3f4f6;
+  color: #111827;
+  text-align: center;
+  font-weight: 700;
+
+  border-right: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+
+  padding: 9px 8px;
+}
+
+/* Cells */
+.excel-real-td{
+  padding: 9px 12px;
+  border-right: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+
+  white-space: nowrap;
+  max-width: 420px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  cursor: default;
+}
+
+/* Zebra */
+.excel-real-table tbody tr:nth-child(odd) td{ background: #ffffff; }
+.excel-real-table tbody tr:nth-child(even) td{ background: #fcfcfd; }
+
+/* Hover fila */
+.excel-real-tr:hover td{
+  background: rgba(33, 163, 102, 0.07);
+}
+
+/* Selección persistente (celda) */
+.excel-real-selected{
+  position: relative;
+  background: rgba(33, 163, 102, 0.10) !important;
+  outline: 2px solid #21a366;
+  outline-offset: -2px;
+}
+
+/* handle */
+.excel-real-selected::after{
+  content:"";
+  position:absolute;
+  width: 7px;
+  height: 7px;
+  right: -1px;
+  bottom: -1px;
+  background: #21a366;
+  border: 1px solid #0e6d3b;
+}
+
+/* ============================
+   AI TITLE / BADGE / ICON FX
+   ============================ */
+
+.ai-title {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+
+  background: linear-gradient(90deg, #ffae6c, #fcffed, #5effc9, #ffae6c);
+  background-size: 300% auto;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  animation: shine-ai 10s linear infinite;
+}
+
+.ai-badge {
+  padding: 1px 5px 20px;
+  font-weight: 500;
+  display: inline-block;
+
+  background: linear-gradient(90deg, #ffae6c, #fcffed, #5effc9, #ffae6c);
+  background-size: 300% auto;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  animation: shine-ai 10s linear infinite;
+}
+
+@keyframes shine-ai {
+  0% { background-position: 0% center; }
+  100% { background-position: 300% center; }
+}
+
+/* Glow IA */
+@keyframes ai-gradient {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
+
+.ai-glow {
+  position: absolute;
+  inset: 2px;
+  background: linear-gradient(90deg, var(--ai1), var(--ai2), var(--ai3), var(--ai4), var(--ai1));
+  background-size: 400% 100%;
+  animation: ai-gradient 1.6s linear infinite;
+  filter: blur(8px);
+  opacity: 0.9;
+  border-radius: 999px;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  translate: 9px;
+}
+
+/* Ring de loading (faltaba) */
+@keyframes ai-ring {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.ai-loading-ring{
+  border-radius: 999px;
+  border: 2px solid rgba(255,255,255,0.12);
+  border-top-color: rgba(255,255,255,0.55);
+  animation: ai-ring 1s linear infinite;
+}
+
+/* Aura IA */
+@keyframes ai-aura {
+  0% { transform: rotate(0deg); background-position: 0% 50%; }
+  100% { transform: rotate(360deg); background-position: 300% 50%; }
+}
+
+.ai-aura {
+  position: absolute;
+  inset: -1px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--ai1), var(--ai2), var(--ai3), var(--ai4), var(--ai1));
+  background-size: 300% 100%;
+  filter: blur(14px);
+  opacity: 0.85;
+  animation: ai-aura 3.2s linear infinite;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+/* reset */
+button.btn-reset {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Texto secundario */
+.subtle{ margin-left: 5px; color: var(--text); }
+
+/* ============================
+   IA GRID (Info + Suggested)
+   ============================ */
+
+.ai-grid{
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 1024px){
+  .ai-grid{
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+/* misma altura visual + scroll interno */
+.aiinfo-panel,
+.suggested-panel{
+  height: clamp(260px, 28vh, 260px);
+  display: flex;
+  flex-direction: column;
+}
+
+.aiinfo-header,
+.suggested-header{
+  flex: 0 0 auto;
+}
+
+.ai-panel-body{
+  flex: 1 1 auto;
+  overflow: auto;
+}
+
+/* scrollbar */
+.ai-panel-body::-webkit-scrollbar{ width: 10px; }
+.ai-panel-body::-webkit-scrollbar-thumb{
+  background: rgba(255,255,255,0.12);
+  border-radius: 999px;
+  border: 2px solid rgba(0,0,0,0.35);
+}
+.ai-panel-body::-webkit-scrollbar-thumb:hover{
+  background: rgba(255,255,255,0.18);
+}
+
+/* ============================
+   INFO IA (JSON)
+   ============================ */
+
+.aiinfo-panel{
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: linear-gradient(180deg, #0b0d10, #07080a);
+  box-shadow: 0 18px 46px rgba(0,0,0,0.55);
+}
+
+.aiinfo-header{
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+}
+
+.aiinfo-badge{
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.82);
+}
+
+.aiinfo-block{
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  padding: 14px;
+  backdrop-filter: blur(8px);
+}
+
+.aiinfo-label{
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: rgba(255,255,255,0.50);
+  margin-bottom: 10px;
+}
+
+.aiinfo-text{
+  color: rgba(255,255,255,0.90);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.aiinfo-list{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.aiinfo-li{
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.aiinfo-dot{
+  color: rgba(255,255,255,0.55);
+  line-height: 1.4;
+}
+
+/* warnings */
+.aiinfo-warnblock{
+  border-color: rgba(239,120,122,0.22);
+  background: rgba(239,120,122,0.06);
+}
+
+.aiinfo-warnlist{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.aiinfo-warnitem{
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+
+  border-radius: 14px;
+  border: 1px solid rgba(239,120,122,0.22);
+  background: rgba(0,0,0,0.18);
+  padding: 10px 12px;
+}
+
+.aiinfo-warnicon{
+  color: rgba(239,120,122,0.95);
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.aiinfo-warntext{
+  color: rgba(255,255,255,0.88);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+/* ============================
+   SUGGESTED CHARTS
+   ============================ */
+
+.suggested-panel{
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: linear-gradient(180deg, #0b0d10, #07080a);
+  box-shadow: 0 18px 46px rgba(0,0,0,0.55);
+}
+
+.suggested-header{
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+}
+
+.suggested-item{
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  padding: 12px 12px;
+  backdrop-filter: blur(8px);
+  transition: transform .16s ease, border-color .16s ease, background .16s ease;
+}
+
+.suggested-item:hover{
+  border-color: rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.04);
+}
+
+.suggested-title{ color: rgba(255,255,255,0.92); }
+.suggested-sub{ color: rgba(255,255,255,0.62); }
+
+.suggested-chevron{
+  opacity: .70;
+  transition: transform .16s ease, opacity .16s ease;
+}
+.suggested-item:hover .suggested-chevron{
+  transform: translateX(2px);
+  opacity: .92;
+}
+
+.suggested-icon{
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(0,0,0,0.28);
+}
+
+/* ============================
+   PROFILE
+   ============================ */
+
+.profile-panel{
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: linear-gradient(180deg, #0b0d10, #07080a);
+  box-shadow: 0 18px 46px rgba(0,0,0,0.55);
+}
+
+.profile-header{
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+}
+
+.profile-card{
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(8px);
+  padding: 14px 14px 12px;
+  transition: transform .16s ease, border-color .16s ease, background .16s ease;
+}
+
+.profile-card:hover{
+  transform: translateY(-1px);
+  border-color: rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.04);
+}
+
+.profile-card-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap: 12px;
+}
+
+.profile-colname{
+  color: rgba(255,255,255,0.92);
+  font-weight: 700;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+.profile-sub{
+  margin-top: 3px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.55);
+}
+.profile-sub-strong{
+  color: rgba(255,255,255,0.82);
+  font-weight: 700;
+}
+
+.profile-type{
+  flex: 0 0 auto;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.82);
+}
+
+.profile-metrics{
+  margin-top: 12px;
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.profile-metric{
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(0,0,0,0.28);
+  padding: 10px 10px;
+}
+.profile-metric-label{
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: rgba(255,255,255,0.45);
+}
+.profile-metric-value{
+  margin-top: 6px;
+  font-size: 16px;
+  font-weight: 800;
+  color: rgba(255,255,255,0.92);
+}
+
+.profile-barwrap{ margin-top: 12px; }
+.profile-barlabel{
+  display:flex;
+  justify-content:space-between;
+  font-size: 11px;
+  color: rgba(255,255,255,0.55);
+}
+.profile-barpct{
+  color: rgba(255,255,255,0.78);
+  font-weight: 700;
+}
+.profile-bar{
+  margin-top: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  overflow:hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.profile-barfill{
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #58be49, #21a366);
+  box-shadow:
+    0 0 0 1px rgba(33,163,102,0.35) inset,
+    0 4px 10px rgba(33,163,102,0.35);
+}
+
+.profile-examples{ margin-top: 12px; }
+.profile-examples-label{
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: rgba(255,255,255,0.45);
+}
+.profile-examples-list{
+  margin-top: 8px;
+  display:flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.profile-chip{
+  max-width: 100%;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.78);
+  font-size: 11px;
+  padding: 6px 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ============================
+   CHART PANEL (simple dark)
+   ============================ */
+.excel-panel{
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  box-shadow: 0 18px 46px rgba(0,0,0,0.55);
+}
+.excel-panel-header{
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* ============================
+   CHART DASHBOARD PANEL (centrado + padding pro)
+   ============================ */
+
+.chart-panel{
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: linear-gradient(180deg, #0b0d10, #07080a);
+  box-shadow: 0 18px 46px rgba(0,0,0,0.55);
+}
+
+.chart-header{
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+}
+
+.chart-header-center{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.chart-title{
+  font-size: 18px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.92);
+  line-height: 1.2;
+}
+
+.chart-sub{
+  margin-top: 6px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.70);
+}
+
+.chart-meta{
+  display: flex;
+  justify-content: center;
+}
+
+.chart-meta-pill{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.78);
+  font-size: 11px;
+}
+
+/* KPI row */
+.chart-kpis{
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (max-width: 1024px){
+  .chart-kpis{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.chart-kpi{
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  padding: 12px 12px;
+  backdrop-filter: blur(8px);
+  text-align: center;
+}
+
+.chart-kpi-label{
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: rgba(255,255,255,0.50);
+}
+
+.chart-kpi-value{
+  margin-top: 6px;
+  font-size: 18px;
+  font-weight: 900;
+  color: rgba(255,255,255,0.92);
+}
+
+.chart-kpi-sub{
+  margin-top: 6px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.65);
+}
+
+/* Chart box */
+.chart-box{
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(10px);
+  padding: 16px 18px;
+}
+
+.chart-box-inner{
+  height: 460px;
+  padding: 6px;
+}
+
+@media (max-width: 768px){
+  .chart-box-inner{
+    height: 380px;
+  }
+}
+
+/* ============================
+   AI GLOBAL LOADER
+   ============================ */
+
+.ai-loader-overlay{
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(6px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ai-loader-box{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 28px 36px;
+}
+
+/* Anillo AI */
+.ai-loader-ring {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  position: relative;
+  border: none; 
+  
+  animation: ai-loader-spin 1.2s linear infinite;
+  filter: drop-shadow(0 0 12px rgba(94,255,201,0.35));
+}
+
+.ai-loader-ring::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  padding: 3px;
+  
+  background: conic-gradient(#ffae6c, #fcffed, #5effc9, #ffae6c);
+  
+  -webkit-mask: 
+     linear-gradient(#fff 0 0) content-box, 
+     linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+}
+
+@keyframes ai-loader-spin {
+  to { transform: rotate(360deg); }
+}
+
+.ai-loader-text{
+  font-size: 12px;
+  letter-spacing: .12em;
+  color: rgba(255,255,255,0.85);
+  text-align: center;
+}
+
+/* =========================
+   THEME TOGGLE (Sun / Moon)
+  
+   ========================= */
+
+.theme-toggle{
+  display: inline-flex;
+  gap: 14px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.theme-btn{
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+
+  padding: 0;
+  border: none;
+  background: transparent;
+  border-radius: 999px;
+
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent;
+
+  transition: transform .15s ease, color .15s ease, background .15s ease;
+}
+
+.theme-btn:hover{
+  transform: scale(1.12);
+  background: rgba(255,255,255,0.05);
+}
+
+.theme-btn svg{
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+
+/* DARK */
+.theme-btn{
+  color: rgba(255,255,255,0.75);
+}
+.theme-btn.is-active{
+  color: rgba(255,255,255,1);
+}
+
+/* LIGHT */
+body.theme-light .theme-btn{
+  color: rgba(17,24,39,0.75);
+}
+
+body.theme-light .theme-btn:hover{
+  background: transparent;
+  color: rgba(17,24,39,0.95);
+}
+
+body.theme-light .theme-btn.is-active{
+  color: rgba(14,109,59,0.95);
+}
+
+
+
+/* =========================
+   FOOTER
+   ========================= */
+.app-footer{
+  margin-top: 44px;
+  padding: 18px 0 6px;
+  border-top: 1px solid rgba(255,255,255,0.10);
+}
+
+.app-footer-inner{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: rgba(255,255,255,0.62);
+  font-size: 11px;
+}
+
+.app-footer-sep{
+  color: rgba(255,255,255,0.25);
+}
+
+.app-footer-me{
+  font-weight: 900;
+  background: linear-gradient(90deg, #ffae6c, #fcffed, #5effc9, #ffae6c);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shine-ai 10s linear infinite;
+}
+
+/* Footer centrado */
+.app-footer-center{
+  justify-content: center !important;
+  text-align: center;
+}
+
+.app-footer-row{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+
+.app-footer-link-ai{
+  text-decoration: none;
+}
+.app-footer-link-ai:hover{
+  opacity: 0.9;
+}
+
+/* =========================
+   LIGHT MODE (solo blanco + verde + AI)
+   ========================= */
+body.theme-light{
+  background: linear-gradient(180deg, #ffffff, #f6fff8) !important;
+  color: #111827 !important;
+}
+
+/* texto sutil */
+body.theme-light .subtle{
+  color: rgba(17,24,39,0.62) !important;
+}
+
+/* paneles principales (sin tocar tu layout) */
+body.theme-light .excel-panel{
+  background: rgba(255,255,255,0.92) !important;
+  border: 1px solid rgba(17,24,39,0.10) !important;
+  box-shadow: 0 18px 46px rgba(0,0,0,0.08) !important;
+}
+
+body.theme-light .excel-panel-header{
+  border-bottom: 1px solid rgba(17,24,39,0.10) !important;
+}
+
+/* textos blancos dentro de excel-panel pasan a oscuro */
+body.theme-light .excel-panel .text-white,
+body.theme-light .excel-panel-header .text-white{
+  color: #111827 !important;
+}
+
+/* chips/pills a light */
+body.theme-light .pill{
+  border: 1px solid rgba(17,24,39,0.12) !important;
+  background: rgba(17,24,39,0.03) !important;
+  color: rgba(17,24,39,0.86) !important;
+}
+
+/* footer en light */
+body.theme-light .app-footer{
+  border-top: 1px solid rgba(17,24,39,0.10) !important;
+}
+
+body.theme-light .app-footer-inner{
+  color: rgba(17,24,39,0.60) !important;
+}
+
+body.theme-light .app-footer-sep{
+  color: rgba(17,24,39,0.25) !important;
+}
+
+/* =========================
+   APP SHELL 
+   ========================= */
+.app-shell{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.app-shell > .mx-auto{
+  flex: 1 1 auto;
+}
+
+/* =========================
+   FIX ICONS EN LIGHT
+   ========================= */
+body.theme-light button[title="Upload"] svg,
+body.theme-light button[title="AI Insights"] svg{
+  stroke: #111827 !important;
+}
+
+body.theme-light .suggested-header svg{
+  stroke: #111827 !important;
+}
+
+/* =========================================================
+   LIGHT MODE OVERRIDES (sin tocar TSX)
+   Soporta: body.light | html.light | [data-theme="light"]
+   ========================================================= */
+
+/* Si tu toggle usa otra clase/atributo, esto igual cubre varios casos */
+body.light,
+html.light body,
+[data-theme="light"] body,
+body[data-theme="light"]{
+  /* Fondo claro tipo Excel */
+  background: linear-gradient(180deg, #f3fbf6, #e8f6ee);
+  color: #0f172a;
+
+  /* si usás vars */
+  --text: #0f172a;
+
+  /* paneles claros */
+  --panelLight: rgba(255,255,255,0.72);
+  --panelLight2: rgba(255,255,255,0.55);
+  --borderLight: rgba(15, 23, 42, 0.10);
+}
+
+/* === Excel glass panels (chart render + profile + preview container “excel-panel”) === */
+body.light .excel-panel,
+html.light body .excel-panel,
+[data-theme="light"] body .excel-panel,
+body[data-theme="light"] .excel-panel{
+  box-shadow: 0 18px 55px rgba(15,23,42,0.08);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+body.light .excel-panel::before,
+html.light body .excel-panel::before,
+[data-theme="light"] body .excel-panel::before,
+body[data-theme="light"] .excel-panel::before{
+  background: linear-gradient(
+    135deg,
+    rgba(0,0,0,0.03),
+    transparent 45%,
+    rgba(37,165,90,0.06)
+  );
+}
+
+/* glow verde suave (no oscuro) */
+body.light .excel-bg-glow,
+html.light body .excel-bg-glow,
+[data-theme="light"] body .excel-bg-glow,
+body[data-theme="light"] .excel-bg-glow{
+  background: radial-gradient(
+    circle at top,
+    rgba(37, 165, 90, 0.14),
+    transparent 60%
+  );
+}
+
+/* Header del panel (lo usás en chart render + preview/profile) */
+body.light .excel-panel-header,
+html.light body .excel-panel-header,
+[data-theme="light"] body .excel-panel-header,
+body[data-theme="light"] .excel-panel-header{
+  color: #0f172a;
+}
+
+/* Si en TSX hay text-white, lo “ganamos” SOLO dentro de los panels */
+body.light .excel-panel .text-white,
+html.light body .excel-panel .text-white,
+[data-theme="light"] body .excel-panel .text-white,
+body[data-theme="light"] .excel-panel .text-white{
+  color: #0f172a !important;
+}
+
+/* Pills en light */
+body.light .pill,
+html.light body .pill,
+[data-theme="light"] body .pill,
+body[data-theme="light"] .pill{
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  background: rgba(255,255,255,0.75);
+  color: rgba(15,23,42,0.90);
+}
+
+body.light .pill-excel,
+html.light body .pill-excel,
+[data-theme="light"] body .pill-excel,
+body[data-theme="light"] .pill-excel{
+  border: 1px solid rgba(37,165,90,0.25);
+  background: rgba(37,165,90,0.10);
+}
+
+/* === Tabla “excel-table” (la que NO es la Excel real, sino la que usás en preview/profile) === */
+body.light .excel-table thead th,
+html.light body .excel-table thead th,
+[data-theme="light"] body .excel-table thead th,
+body[data-theme="light"] .excel-table thead th{
+  background: rgba(255,255,255,0.80);
+  color: rgba(15,23,42,0.92);
+  border-color: rgba(15,23,42,0.10);
+}
+
+body.light .excel-table th,
+body.light .excel-table td,
+html.light body .excel-table th,
+html.light body .excel-table td,
+[data-theme="light"] body .excel-table th,
+[data-theme="light"] body .excel-table td,
+body[data-theme="light"] .excel-table th,
+body[data-theme="light"] .excel-table td{
+  border: 1px solid rgba(15,23,42,0.10);
+  background: rgba(255,255,255,0.60);
+  color: rgba(15,23,42,0.90);
+}
+
+body.light .excel-table tbody tr:hover td,
+html.light body .excel-table tbody tr:hover td,
+[data-theme="light"] body .excel-table tbody tr:hover td,
+body[data-theme="light"] .excel-table tbody tr:hover td{
+  background: rgba(37,165,90,0.10);
+  border-color: rgba(37,165,90,0.18);
+}
+
+/* === IA glow: en light bajamos intensidad (si no se “quema”) === */
+body.light .ai-glow,
+html.light body .ai-glow,
+[data-theme="light"] body .ai-glow,
+body[data-theme="light"] .ai-glow{
+  opacity: 0.65;
+  filter: blur(10px);
+  mix-blend-mode: normal;
+}
+
+body.light .ai-aura,
+html.light body .ai-aura,
+[data-theme="light"] body .ai-aura,
+body[data-theme="light"] .ai-aura{
+  opacity: 0.65;
+  mix-blend-mode: normal;
+}
+
+/* =========================================================
+   ✅ LIGHT MODE (tu toggle real): body.theme-light
+   Fix: AI panels + chart panel + profile panel siguen oscuros
+   ========================================================= */
+
+body.theme-light{
+  color: #0f172a !important;
+}
+
+/* --- AI INFO (JSON) + SUGGESTED + PROFILE + CHART PANEL => glass claro --- */
+body.theme-light :is(.aiinfo-panel, .suggested-panel, .profile-panel, .chart-panel){
+  background: rgba(255,255,255,0.78) !important;
+  border: 1px solid rgba(15,23,42,0.12) !important;
+  box-shadow: 0 18px 55px rgba(15,23,42,0.10) !important;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+/* headers claros */
+body.theme-light :is(.aiinfo-header, .suggested-header, .profile-header, .chart-header){
+  background: rgba(255,255,255,0.65) !important;
+  border-bottom: 1px solid rgba(15,23,42,0.10) !important;
+}
+
+/* --- textos generales dentro de esos panels --- */
+body.theme-light :is(.aiinfo-panel, .suggested-panel, .profile-panel, .chart-panel){
+  color: #0f172a !important;
+}
+
+/* AI INFO */
+body.theme-light .aiinfo-label{
+  color: rgba(15,23,42,0.55) !important;
+}
+body.theme-light .aiinfo-text{
+  color: rgba(15,23,42,0.90) !important;
+}
+body.theme-light .aiinfo-dot{
+  color: rgba(15,23,42,0.55) !important;
+}
+body.theme-light .aiinfo-block{
+  border: 1px solid rgba(15,23,42,0.10) !important;
+  background: rgba(255,255,255,0.55) !important;
+}
+body.theme-light .aiinfo-warnblock{
+  border-color: rgba(239,120,122,0.28) !important;
+  background: rgba(239,120,122,0.08) !important;
+}
+body.theme-light .aiinfo-warnitem{
+  border-color: rgba(239,120,122,0.28) !important;
+  background: rgba(255,255,255,0.60) !important;
+}
+body.theme-light .aiinfo-warntext{
+  color: rgba(15,23,42,0.90) !important;
+}
+
+/* SUGGESTED */
+body.theme-light .suggested-item{
+  border: 1px solid rgba(15,23,42,0.10) !important;
+  background: rgba(255,255,255,0.55) !important;
+}
+body.theme-light .suggested-item:hover{
+  border-color: rgba(37,165,90,0.22) !important;
+  background: rgba(37,165,90,0.08) !important;
+}
+body.theme-light .suggested-title{
+  color: rgba(15,23,42,0.92) !important;
+}
+body.theme-light .suggested-sub{
+  color: rgba(15,23,42,0.60) !important;
+}
+body.theme-light .suggested-icon{
+  border: 1px solid rgba(15,23,42,0.10) !important;
+  background: rgba(255,255,255,0.65) !important;
+}
+
+/* PROFILE */
+body.theme-light .profile-card{
+  border: 1px solid rgba(15,23,42,0.10) !important;
+  background: rgba(255,255,255,0.55) !important;
+}
+body.theme-light .profile-card:hover{
+  border-color: rgba(37,165,90,0.22) !important;
+  background: rgba(37,165,90,0.08) !important;
+}
+body.theme-light .profile-colname{
+  color: rgba(15,23,42,0.92) !important;
+}
+body.theme-light .profile-sub{
+  color: rgba(15,23,42,0.55) !important;
+}
+body.theme-light .profile-sub-strong{
+  color: rgba(15,23,42,0.85) !important;
+}
+body.theme-light .profile-type{
+  border: 1px solid rgba(15,23,42,0.14) !important;
+  background: rgba(255,255,255,0.75) !important;
+  color: rgba(15,23,42,0.90) !important;
+}
+body.theme-light .profile-metric{
+  border: 1px solid rgba(15,23,42,0.10) !important;
+  background: rgba(255,255,255,0.65) !important;
+}
+body.theme-light .profile-metric-label{
+  color: rgba(15,23,42,0.55) !important;
+}
+body.theme-light .profile-metric-value{
+  color: rgba(15,23,42,0.92) !important;
+}
+body.theme-light .profile-bar{
+  background: rgba(15,23,42,0.06) !important;
+  border: 1px solid rgba(15,23,42,0.10) !important;
+}
+body.theme-light .profile-barpct{
+  color: rgba(15,23,42,0.75) !important;
+}
+body.theme-light .profile-chip{
+  border: 1px solid rgba(15,23,42,0.14) !important;
+  background: rgba(255,255,255,0.75) !important;
+  color: rgba(15,23,42,0.80) !important;
+}
+
+/* CHART PANEL textos */
+body.theme-light .chart-title{
+  color: rgba(15,23,42,0.92) !important;
+}
+body.theme-light .chart-sub{
+  color: rgba(15,23,42,0.62) !important;
+}
+body.theme-light .chart-meta-pill{
+  border: 1px solid rgba(15,23,42,0.12) !important;
+  background: rgba(255,255,255,0.75) !important;
+  color: rgba(15,23,42,0.78) !important;
+}
+body.theme-light .chart-kpi{
+  border: 1px solid rgba(15,23,42,0.10) !important;
+  background: rgba(255,255,255,0.55) !important;
+}
+body.theme-light .chart-kpi-label{
+  color: rgba(15,23,42,0.55) !important;
+}
+body.theme-light .chart-kpi-value{
+  color: rgba(15,23,42,0.92) !important;
+}
+body.theme-light .chart-kpi-sub{
+  color: rgba(15,23,42,0.62) !important;
+}
+body.theme-light .chart-box{
+  border: 1px solid rgba(15,23,42,0.10) !important;
+  background: rgba(255,255,255,0.55) !important;
+}
+
+/* --- ICONOS: tu TSX muchos los fuerza a color="#fff", los pisamos en light --- */
+body.theme-light :is(.aiinfo-panel, .suggested-panel, .profile-panel, .chart-panel) svg{
+  stroke: #0f172a !important;
+}
+
+/* --- RECHARTS: tu TSX fuerza ticks/axis blancos => los pisamos en light --- */
+body.theme-light .chart-panel :is(.recharts-text){
+  fill: rgba(15,23,42,0.85) !important;
+}
+body.theme-light .chart-panel :is(.recharts-cartesian-axis-line, .recharts-cartesian-axis-tick-line){
+  stroke: rgba(15,23,42,0.22) !important;
+}
+
+/* Tooltip de recharts si aparece default */
+body.theme-light .recharts-default-tooltip{
+  background: rgba(255,255,255,0.92) !important;
+  border: 1px solid rgba(15,23,42,0.12) !important;
+  color: rgba(15,23,42,0.92) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 16px 40px rgba(15,23,42,0.10) !important;
+}
+
+
+/* =========================
+   TOOLTIP RECHARTS - LIGHT
+   ========================= */
+body.theme-light .recharts-tooltip-wrapper .recharts-default-tooltip{
+  background: rgba(255,255,255,0.92) !important;
+  border: 1px solid rgba(15,23,42,0.14) !important;
+  color: rgba(15,23,42,0.92) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 16px 40px rgba(15,23,42,0.10) !important;
+}
+
+/* El texto real del tooltip */
+body.theme-light .recharts-tooltip-wrapper *{
+  color: rgba(15,23,42,0.92) !important;
+  fill: rgba(15,23,42,0.92) !important;
+}
+
+
+/* =========================================
+   LIGHT MODE – AI BLUR PULSE (SOFT & WHITE)
+   ========================================= */
+
+body.theme-light{
+  background: linear-gradient(180deg, #ffffff, #ffffff) !important;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* capa IA blur */
+body.theme-light::before{
+  content:"";
+  position: fixed;
+  inset: -20%;
+  z-index: 0;
+  pointer-events: none;
+
+  background:
+    radial-gradient(circle at 20% 20%,
+      rgba(255, 174, 108, 0.534),
+      transparent 25%),
+
+    radial-gradient(circle at 80% 25%,
+      rgba(90, 238, 193, 0.26),
+      transparent 28%),
+
+    radial-gradient(circle at 25% 80%,
+      rgb(255, 255, 255),
+      transparent 55%),
+
+    radial-gradient(circle at 80% 80%,
+      rgb(255, 255, 255),
+      transparent 60%);
+
+  filter: blur(80px);
+  opacity: 0.55;
+
+  animation: ai-pulse-blur 2.5s ease-in-out infinite;
+}
+
+/* contenido arriba */
+body.theme-light #root,
+body.theme-light .app-shell,
+body.theme-light .mx-auto{
+  position: relative;
+  z-index: 1;
+}
+
+/* pulso */
+@keyframes ai-pulse-blur{
+  0%{
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50%{
+    opacity: 0.75;
+    transform: scale(1.06);
+  }
+  100%{
+    opacity: 0.45;
+    transform: scale(1);
+  }
+}
