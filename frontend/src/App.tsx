@@ -834,22 +834,6 @@ export default function App() {
                   </LineChart>
                 ) : activeSpec?.type === "pie" ? (
                   <PieChart>
-                    <Tooltip
-                      contentStyle={{
-                        background: "rgba(10, 12, 16, 0.92)",
-                        border: "1px solid rgba(255,255,255,0.10)",
-                        borderRadius: 14,
-                        padding: "10px 12px",
-                      }}
-                      labelStyle={{ color: "rgba(255,255,255,0.85)" }}
-                      itemStyle={{ color: "rgba(255,255,255,0.92)" }}
-                      formatter={(v: any) => {
-                        const n = Number(v) || 0;
-                        const pct = pieTotal ? n / pieTotal : 0;
-                        return [`${n.toLocaleString()} (${formatPct(pct)})`, "Value"];
-                      }}
-                    />
-
                     <Legend
                       verticalAlign="bottom"
                       align="center"
@@ -864,8 +848,7 @@ export default function App() {
                       data={safeChartData}
                       dataKey="value"
                       nameKey="name"
-                      outerRadius="88%"
-                      innerRadius="58%"     // ✅ dona
+                      outerRadius="80%"
                       paddingAngle={0}
                       labelLine={true}
                       isAnimationActive={false}
