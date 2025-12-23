@@ -22,3 +22,106 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# =========================
+# OS / Editor
+# =========================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# Logs
+# =========================
+logs/
+*.log
+
+# =========================
+# Environment variables
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Build / Dist
+# =========================
+bin/
+obj/
+dist/
+build/
+out/
+
+# =========================
+# .NET
+# =========================
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.cache
+*.pdb
+
+# Rider / VS
+.idea/
+.vs/
+
+# =========================
+# Node / NPM
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# Temporary / Generated
+# =========================
+tmp/
+temp/
+.cache/
+
+# =========================
+# Database
+# =========================
+*.db
+*.sqlite
+*.sqlite3
+
+# =========================
+# Uploads / Generated files
+# =========================
+uploads/
+storage/
+data/
+files/
+
+# =========================
+# Secrets / Certificates
+# =========================
+*.key
+*.pem
+*.crt
+*.pfx
+
+# =========================
+# Coverage / Tests
+# =========================
+coverage/
+test-results/
+
+# =========================
+# Docker
+# =========================
+.dockerignore
+docker-compose.override.yml
+
+# =========================
+# Misc
+# =========================
+*.bak
+*.old
