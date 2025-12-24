@@ -1,73 +1,59 @@
-# React + TypeScript + Vite
+# Excel Assistant AI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Excel Assistant AI is a full-stack web application that allows users to upload Excel files, analyze their structure, and generate AI-powered insights and charts.
 
-Currently, two official plugins are available:
+The project focuses on real-world Excel data, backend-driven processing, and clean, scalable architecture.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Key Features
+- Upload and preview `.xlsx` files
+- Automatic data profiling (types, uniqueness, empties)
+- AI-generated dataset insights and chart suggestions
+- Backend Excel aggregations (group, sum, count, top-N)
+- Interactive charts (bar, pie/donut, line)
 
-## React Compiler
+## Tech Stack
+- Backend: ASP.NET Core (.NET), Clean Architecture
+- Frontend: React, TypeScript, Tailwind CSS, Recharts
+- AI: OpenAI Responses API
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Status
+Core features implemented. UI and UX refinements in progress.
 
-## Expanding the ESLint configuration
+## License
+MIT
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Español
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+```md
+# Excel Assistant AI
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Excel Assistant AI es una aplicación web full-stack que permite subir archivos Excel, analizar su estructura y generar insights y gráficos usando IA.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+El proyecto está pensado para trabajar con Excel reales, con procesamiento en backend y una arquitectura limpia y escalable.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Funcionalidades
+- Subida y preview de archivos `.xlsx`
+- Perfilado automático de datos (tipos, valores únicos, vacíos)
+- Insights generados por IA
+- Agregaciones en backend (group, sum, count, top-N)
+- Gráficos interactivos (barras, dona, líneas)
+
+## Tecnologías
+- Backend: ASP.NET Core (.NET), Clean Architecture
+- Frontend: React, TypeScript, Tailwind CSS, Recharts
+- IA: OpenAI Responses API
+
+
+## How to Run
+Backend:
+```bash
+cd backend/src/ExcelAssistantAI.Api
+dotnet run
+
+cd frontend
+npm install
+npm run dev
+
